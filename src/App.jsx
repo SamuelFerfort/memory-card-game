@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-
-let bestScore = 0;
-
-const capitalizeFirstLetter = (string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-};
+import { capitalizeFirstLetter, shuffle } from "./helper/helper";
 
 function App() {
   const [pokemonData, setPokemonData] = useState([]);
   const [score, setScore] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [clickedPokemon, setClickedPokemon] = useState([]);
+
   useEffect(() => {
     const fetchPokemonCards = async () => {
       const localData = localStorage.getItem("pokemon");
@@ -49,22 +46,34 @@ function App() {
     fetchPokemonCards();
   }, []);
 
+  const handleClick = (e) => {
+    const name = e.currentTarget.name;
+
+    if (clickedPokemon.includes(name)) {
+      console.log("game over");
+      setScore(0);
+      setClickedPokemon([]);
+      return;
+    }
+    if (score === 12) {
+      console.log("You won");
+    }
+    setClickedPokemon([...clickedPokemon, name]);
+    setScore(score + 1);
+  };
+
+  const pokemonCards = shuffle(pokemonData);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  const handleClick = () => {};
 
   return (
     <>
       <h1>Score: {score}</h1>
       <main>
-        {pokemonData.map((pokemon) => (
-          <Card
-            key={pokemon.name}
-            name={pokemon.name}
-            img={pokemon.sprite}
-            onClick={handleClick}
-          ></Card>
+        {pokemonCards.map((pokemon) => (
+          <Card key={pokemon.name} {...pokemon} handleClick={handleClick} />
         ))}
       </main>
     </>
@@ -73,10 +82,10 @@ function App() {
 
 export default App;
 
-function Card({ name, img, handleClick }) {
+function Card({ name, handleClick, sprite }) {
   return (
-    <button className="card">
-      <img src={img} alt={name} />
+    <button key={name} className="card" name={name} onClick={handleClick}>
+      <img src={sprite} alt={name} />
       <p>{name}</p>
     </button>
   );

@@ -82,7 +82,7 @@ header > span {
   height: 50vh;
 }
 
-.start-container > button {
+.reset {
   font-family: "PressStart2P";
   background: none;
   font-size: 40px;
@@ -91,7 +91,20 @@ header > span {
   background-color: rgba(255, 255, 255, 0.6);
 }
 
-.start-container > button:hover {
+.reset:hover {
   background-color: rgba(255, 255, 255, 0.8);
 
 } 
+
+.resetScreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 80vh;
+  gap: 40px;
+}
+
+.resetScreen > h1 {
+  font-size: 60px;
+}

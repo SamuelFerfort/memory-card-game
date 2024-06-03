@@ -1,20 +1,24 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import { capitalizeFirstLetter, shuffle } from "./helper/helper";
+import confetti from "canvas-confetti";
+import song from "./assets/littleroot.mp3";
 
 function App() {
   const [pokemonData, setPokemonData] = useState([]);
   const [score, setScore] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
   const [clickedPokemon, setClickedPokemon] = useState([]);
   const [highestScore, setHighestScore] = useState(0);
   const [startGame, setStartGame] = useState(false);
+  const [win, setWin] = useState(false);
+  const [littleroot] = useState(new Audio(song));
+  
+  
   useEffect(() => {
     const fetchPokemonCards = async () => {
       const localData = localStorage.getItem("pokemon");
       if (localData) {
         setPokemonData(JSON.parse(localData));
-        setIsLoading(false);
         return;
       }
       const url = "https://pokeapi.co/api/v2/pokemon/?offset=20&limit=12";
@@ -39,8 +43,6 @@ function App() {
         localStorage.setItem("pokemon", JSON.stringify(pokemonDetails));
       } catch (err) {
         console.error("Error fetching Pokemon data", err);
-      } finally {
-        setIsLoading(false);
       }
     };
 
@@ -50,6 +52,7 @@ function App() {
   const handleClick = (e) => {
     const name = e.currentTarget.name;
 
+    // Game Over
     if (clickedPokemon.includes(name)) {
       console.log("game over");
       if (score > highestScore) setHighestScore(score);
@@ -57,25 +60,47 @@ function App() {
       setClickedPokemon([]);
       return;
     }
-    if (score === 12) {
+
+    // Win
+    if (score + 1 === 12) {
       console.log("You won");
+      setWin(!win);
+      setHighestScore(12);
+      confetti();
     }
+
+    // Continue
     setClickedPokemon([...clickedPokemon, name]);
     setScore(score + 1);
   };
+
   const handleStartClick = () => {
     setStartGame(!startGame);
-    
+    littleroot.loop = true;
+    littleroot.volume = 0.2;
+    littleroot.play();
+  };
+
+  const handleReset = () => {
+    setWin(!win);
+    setScore(0);
+    setClickedPokemon([]);
   };
   const pokemonCards = shuffle(pokemonData);
 
-  if (isLoading) {
-    return <main>Loading...</main>;
+  if (win) {
+    return (
+      <div className="resetScreen">
+        <h1>You Win!</h1>
+        <button className="reset" onClick={handleReset}>
+          Play Again
+        </button>
+      </div>
+    );
   }
 
   return (
     <div className="container">
-      
       <header>
         <h1>Pokemon Memory Game</h1>
         <span>
@@ -94,7 +119,9 @@ function App() {
         </main>
       ) : (
         <div className="start-container">
-          <button onClick={handleStartClick}>Start Game</button>
+          <button className="reset" onClick={handleStartClick}>
+            Start Game
+          </button>
         </div>
       )}
     </div>

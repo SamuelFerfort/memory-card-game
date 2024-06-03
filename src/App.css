@@ -130,9 +130,17 @@ header > span {
     grid-template-columns: repeat(2, 1fr);
     place-items: center;
     gap: 40px;
+    width: 100vw;
   }
-  .sound {
-    left: 370px;
+  header > h1 {
+    font-size: 1.2rem;
+  }
+  header > span {
+    font-size: 0.8rem;
+  }
+
+  .sound > img {
+    width: 40px;
   }
   :root {
     background-size: cover;

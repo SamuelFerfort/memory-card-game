@@ -1,56 +1,31 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { capitalizeFirstLetter, shuffle } from "./helper/helper";
+import { shuffle } from "./helper/helper";
 import confetti from "canvas-confetti";
 import song from "./assets/littleroot.mp3";
-
+import playIcon from "./assets/soundOn.svg";
+import pauseIcon from "./assets/soundOff.svg";
+import Card from "./components/Card";
+import { fetchPokemonCards } from "./components/fetch";
 function App() {
+  
   const [pokemonData, setPokemonData] = useState([]);
   const [score, setScore] = useState(0);
   const [clickedPokemon, setClickedPokemon] = useState([]);
   const [highestScore, setHighestScore] = useState(0);
   const [startGame, setStartGame] = useState(false);
   const [win, setWin] = useState(false);
-  const [littleroot] = useState(new Audio(song));
-  
-  
+  const [littleRoot] = useState(new Audio(song));
+  const [isSongPlaying, setIsSongPlaying] = useState(false);
+
   useEffect(() => {
-    const fetchPokemonCards = async () => {
-      const localData = localStorage.getItem("pokemon");
-      if (localData) {
-        setPokemonData(JSON.parse(localData));
-        return;
-      }
-      const url = "https://pokeapi.co/api/v2/pokemon/?offset=20&limit=12";
-
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
-
-        const pokemonDetails = await Promise.all(
-          data.results.map(async (pokemon) => {
-            const response = await fetch(pokemon.url);
-
-            const json = await response.json();
-
-            return {
-              name: capitalizeFirstLetter(json.name),
-              sprite: json.sprites.other["official-artwork"].front_default,
-            };
-          })
-        );
-        setPokemonData(pokemonDetails);
-        localStorage.setItem("pokemon", JSON.stringify(pokemonDetails));
-      } catch (err) {
-        console.error("Error fetching Pokemon data", err);
-      }
-    };
-
-    fetchPokemonCards();
+    fetchPokemonCards().then(setPokemonData)
   }, []);
 
   const handleClick = (e) => {
     const name = e.currentTarget.name;
+
+    const shuffledPokemonData = shuffle(pokemonData);
 
     // Game Over
     if (clickedPokemon.includes(name)) {
@@ -72,13 +47,17 @@ function App() {
     // Continue
     setClickedPokemon([...clickedPokemon, name]);
     setScore(score + 1);
+    setPokemonData(shuffledPokemonData);
   };
 
   const handleStartClick = () => {
     setStartGame(!startGame);
-    littleroot.loop = true;
-    littleroot.volume = 0.2;
-    littleroot.play();
+    littleRoot.pause();
+    littleRoot.currentTime = 0;
+    littleRoot.loop = true;
+    littleRoot.volume = 0.2;
+    littleRoot.play();
+    setIsSongPlaying(!isSongPlaying);
   };
 
   const handleReset = () => {
@@ -86,7 +65,17 @@ function App() {
     setScore(0);
     setClickedPokemon([]);
   };
-  const pokemonCards = shuffle(pokemonData);
+
+  const toggleSong = () => {
+    if (isSongPlaying) {
+      littleRoot.pause();
+    } else {
+      littleRoot.play();
+    }
+    setIsSongPlaying(!isSongPlaying);
+  };
+
+  const songIcon = isSongPlaying ? pauseIcon : playIcon;
 
   if (win) {
     return (
@@ -101,6 +90,9 @@ function App() {
 
   return (
     <div className="container">
+      <button className="sound" onClick={toggleSong}>
+        <img src={songIcon} alt="Sound" />
+      </button>
       <header>
         <h1>Pokemon Memory Game</h1>
         <span>
@@ -113,7 +105,7 @@ function App() {
       </header>
       {startGame ? (
         <main>
-          {pokemonCards.map((pokemon) => (
+          {pokemonData.map((pokemon) => (
             <Card key={pokemon.name} {...pokemon} handleClick={handleClick} />
           ))}
         </main>
@@ -129,12 +121,3 @@ function App() {
 }
 
 export default App;
-
-function Card({ name, handleClick, sprite }) {
-  return (
-    <button key={name} className="card" name={name} onClick={handleClick}>
-      <img src={sprite} alt={name} />
-      <p>{name}</p>
-    </button>
-  );
-}

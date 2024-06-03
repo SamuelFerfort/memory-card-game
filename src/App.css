@@ -1,8 +1,8 @@
 :root {
   background-image: linear-gradient(
       to right,
-      rgba(0, 0, 0, 0.4),
-      rgba(0, 0, 0, 0.4)
+      rgba(0, 0, 0, 0.2),
+      rgba(0, 0, 0, 0.2)
     ),
     url(assets/950765.png);
   font-family: "PressStart2P";
@@ -29,6 +29,7 @@ main {
   grid-template-columns: repeat(6, 1fr);
   place-items: center;
   gap: 40px;
+  height: 50vh;
 }
 
 .card > img {
@@ -74,3 +75,23 @@ header > span {
   gap: 40px;
   font-size: 18px;
 }
+
+.start-container {
+  display: flex;
+  justify-content: center;
+  height: 50vh;
+}
+
+.start-container > button {
+  font-family: "PressStart2P";
+  background: none;
+  font-size: 40px;
+  height: 100px;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.start-container > button:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+
+} 

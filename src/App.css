@@ -108,3 +108,19 @@ header > span {
 .resetScreen > h1 {
   font-size: 60px;
 }
+
+.sound {
+  position: absolute;
+  background: none;
+  border: none;
+  width: 10px;
+  height: 10px;
+  left: 5px;
+  top: 5px;
+  cursor: pointer;
+}
+
+.sound > img {
+  width: 75px;
+}
+

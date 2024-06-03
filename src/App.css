@@ -1,33 +1,76 @@
+:root {
+  background-image: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 0.4)
+    ),
+    url(assets/950765.png);
+  font-family: "PressStart2P";
+}
 
-
-
-
+@font-face {
+  font-family: "PressStart2P";
+  src: url("assets/PressStart2P-Regular.ttf") format("truetype");
+}
+.container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+  height: 90vh;
+  padding: 0;
+  margin: 0;
+}
 
 main {
-  width: 100vw;
+  width: 80vw;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   place-items: center;
   gap: 40px;
 }
 
-
-
-.card > img{
+.card > img {
   width: 150px;
   height: auto;
 }
 
 .card > p {
-  font-size: 32px;
- 
+  font-size: 15px;
 }
 
-
 .card {
-  padding: 30px;
+  padding: 20px;
   text-align: center;
-  border: 1px solid black;
-  background-color: lightcoral;
+  background-color: rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  font-family: "PressStart2P";
+}
+.card:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+  transform: scale(1.1);
+}
+header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+header > h1 {
+  font-size: 50px;
+}
 
+header > span {
+  font-size: 15px;
+}
+
+.score {
+  display: flex;
+  gap: 40px;
+  font-size: 18px;
 }

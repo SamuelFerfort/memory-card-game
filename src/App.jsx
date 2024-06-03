@@ -7,6 +7,7 @@ function App() {
   const [score, setScore] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [clickedPokemon, setClickedPokemon] = useState([]);
+  const [highestScore, setHighestScore] = useState(0);
 
   useEffect(() => {
     const fetchPokemonCards = async () => {
@@ -51,6 +52,7 @@ function App() {
 
     if (clickedPokemon.includes(name)) {
       console.log("game over");
+      if (score > highestScore) setHighestScore(score)
       setScore(0);
       setClickedPokemon([]);
       return;
@@ -69,14 +71,23 @@ function App() {
   }
 
   return (
-    <>
-      <h1>Score: {score}</h1>
+    <div className="container">
+      <header>
+        <h1>Pokemon Memory Game</h1>
+        <span>
+          Get points by clicking a Pokemon but don't click it more than once!
+        </span>
+        <div className="score">
+          <span>Score:{score}</span>
+          <span>Highest Score:{highestScore}</span>
+        </div>
+      </header>
       <main>
         {pokemonCards.map((pokemon) => (
           <Card key={pokemon.name} {...pokemon} handleClick={handleClick} />
         ))}
       </main>
-    </>
+    </div>
   );
 }
 

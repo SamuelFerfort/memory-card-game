@@ -8,7 +8,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [clickedPokemon, setClickedPokemon] = useState([]);
   const [highestScore, setHighestScore] = useState(0);
-
+  const [startGame, setStartGame] = useState(false);
   useEffect(() => {
     const fetchPokemonCards = async () => {
       const localData = localStorage.getItem("pokemon");
@@ -52,7 +52,7 @@ function App() {
 
     if (clickedPokemon.includes(name)) {
       console.log("game over");
-      if (score > highestScore) setHighestScore(score)
+      if (score > highestScore) setHighestScore(score);
       setScore(0);
       setClickedPokemon([]);
       return;
@@ -63,15 +63,19 @@ function App() {
     setClickedPokemon([...clickedPokemon, name]);
     setScore(score + 1);
   };
-
+  const handleStartClick = () => {
+    setStartGame(!startGame);
+    
+  };
   const pokemonCards = shuffle(pokemonData);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <main>Loading...</main>;
   }
 
   return (
     <div className="container">
+      
       <header>
         <h1>Pokemon Memory Game</h1>
         <span>
@@ -82,11 +86,17 @@ function App() {
           <span>Highest Score:{highestScore}</span>
         </div>
       </header>
-      <main>
-        {pokemonCards.map((pokemon) => (
-          <Card key={pokemon.name} {...pokemon} handleClick={handleClick} />
-        ))}
-      </main>
+      {startGame ? (
+        <main>
+          {pokemonCards.map((pokemon) => (
+            <Card key={pokemon.name} {...pokemon} handleClick={handleClick} />
+          ))}
+        </main>
+      ) : (
+        <div className="start-container">
+          <button onClick={handleStartClick}>Start Game</button>
+        </div>
+      )}
     </div>
   );
 }

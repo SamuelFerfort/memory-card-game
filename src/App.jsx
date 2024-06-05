@@ -8,7 +8,6 @@ import pauseIcon from "./assets/soundOff.svg";
 import Card from "./components/Card";
 import { fetchPokemonCards } from "./components/fetch";
 function App() {
-  
   const [pokemonData, setPokemonData] = useState([]);
   const [score, setScore] = useState(0);
   const [clickedPokemon, setClickedPokemon] = useState([]);
@@ -19,7 +18,7 @@ function App() {
   const [isSongPlaying, setIsSongPlaying] = useState(false);
 
   useEffect(() => {
-    fetchPokemonCards().then(setPokemonData)
+    fetchPokemonCards().then(setPokemonData);
   }, []);
 
   const handleClick = (e) => {
@@ -29,8 +28,6 @@ function App() {
 
     // Game Over
     if (clickedPokemon.includes(name)) {
-      console.log("game over");
-      if (score > highestScore) setHighestScore(score);
       setScore(0);
       setClickedPokemon([]);
       return;
@@ -38,13 +35,13 @@ function App() {
 
     // Win
     if (score + 1 === 12) {
-      console.log("You won");
       setWin(!win);
       setHighestScore(12);
       confetti();
     }
 
     // Continue
+    if (score + 1 > highestScore) setHighestScore(score + 1);
     setClickedPokemon([...clickedPokemon, name]);
     setScore(score + 1);
     setPokemonData(shuffledPokemonData);

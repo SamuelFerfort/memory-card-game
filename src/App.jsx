@@ -88,7 +88,7 @@ function App() {
   return (
     <div className="container">
       <button className="sound" onClick={toggleSong}>
-        <img src={songIcon} alt="Sound" />
+        <img src={songIcon} alt="song toggle button" />
       </button>
       <header>
         <h1>Pokemon Memory Game</h1>

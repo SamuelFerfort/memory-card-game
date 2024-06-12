@@ -11,6 +11,10 @@ import { fetchPokemonCards } from "./components/fetch";
 import WinScreen from "./components/WinScreen";
 import StartScreen from "./components/StartScreen";
 
+const littleRoot = new Audio(song);
+littleRoot.loop = true;
+littleRoot.volume = 0.2;
+
 function App() {
   const [pokemonData, setPokemonData] = useState([]);
   const [score, setScore] = useState(0);
@@ -18,9 +22,7 @@ function App() {
   const [highestScore, setHighestScore] = useState(0);
   const [startGame, setStartGame] = useState(false);
   const [win, setWin] = useState(false);
-  const [littleRoot] = useState(new Audio(song));
   const [isSongPlaying, setIsSongPlaying] = useState(false);
-
   useEffect(() => {
     fetchPokemonCards().then(setPokemonData);
   }, []);
@@ -54,8 +56,7 @@ function App() {
   const handleStartClick = () => {
     setStartGame(!startGame);
     littleRoot.pause();
-    littleRoot.loop = true;
-    littleRoot.volume = 0.2;
+
     littleRoot.play();
     setIsSongPlaying(!isSongPlaying);
   };
@@ -67,11 +68,7 @@ function App() {
   };
 
   const toggleSong = () => {
-    if (isSongPlaying) {
-      littleRoot.pause();
-    } else {
-      littleRoot.play();
-    }
+    littleRoot.paused ? littleRoot.play() : littleRoot.pause();
     setIsSongPlaying(!isSongPlaying);
   };
 
@@ -84,7 +81,7 @@ function App() {
       <button className="sound" onClick={toggleSong}>
         <img src={songIcon} alt="song toggle button" />
       </button>
-      
+
       <Header score={score} highestScore={highestScore} />
 
       {startGame ? (

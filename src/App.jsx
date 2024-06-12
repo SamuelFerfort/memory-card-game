@@ -5,7 +5,7 @@ import confetti from "canvas-confetti";
 import song from "./assets/littleroot.mp3";
 import playIcon from "./assets/soundOn.svg";
 import pauseIcon from "./assets/soundOff.svg";
-import Card from "./components/Card";
+import PokemonCards from "./components/PokemonCards";
 import Header from "./components/header";
 import { fetchPokemonCards } from "./components/fetch";
 function App() {
@@ -93,11 +93,7 @@ function App() {
       </button>
       <Header score={score} highestScore={highestScore} />
       {startGame ? (
-        <main>
-          {pokemonData.map((pokemon) => (
-            <Card key={pokemon.name} {...pokemon} handleClick={handleClick} />
-          ))}
-        </main>
+        <PokemonCards pokemonData={pokemonData} handleClick={handleClick} />
       ) : (
         <div className="start-container">
           <button className="reset" onClick={handleStartClick}>

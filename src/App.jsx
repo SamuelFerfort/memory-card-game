@@ -8,6 +8,9 @@ import pauseIcon from "./assets/soundOff.svg";
 import PokemonCards from "./components/PokemonCards";
 import Header from "./components/header";
 import { fetchPokemonCards } from "./components/fetch";
+import WinScreen from "./components/WinScreen";
+import StartScreen from "./components/StartScreen";
+
 function App() {
   const [pokemonData, setPokemonData] = useState([]);
   const [score, setScore] = useState(0);
@@ -51,7 +54,6 @@ function App() {
   const handleStartClick = () => {
     setStartGame(!startGame);
     littleRoot.pause();
-    littleRoot.currentTime = 0;
     littleRoot.loop = true;
     littleRoot.volume = 0.2;
     littleRoot.play();
@@ -75,31 +77,20 @@ function App() {
 
   const songIcon = isSongPlaying ? pauseIcon : playIcon;
 
-  if (win) {
-    return (
-      <div className="resetScreen">
-        <h1>You Win!</h1>
-        <button className="reset" onClick={handleReset}>
-          Play Again
-        </button>
-      </div>
-    );
-  }
+  if (win) return <WinScreen handleReset={handleReset} />;
 
   return (
     <div className="container">
       <button className="sound" onClick={toggleSong}>
         <img src={songIcon} alt="song toggle button" />
       </button>
+      
       <Header score={score} highestScore={highestScore} />
+
       {startGame ? (
         <PokemonCards pokemonData={pokemonData} handleClick={handleClick} />
       ) : (
-        <div className="start-container">
-          <button className="reset" onClick={handleStartClick}>
-            Start Game
-          </button>
-        </div>
+        <StartScreen handleStartClick={handleStartClick} />
       )}
     </div>
   );

@@ -23,12 +23,12 @@ function App() {
   }, []);
 
   const handleClick = (e) => {
-    const name = e.currentTarget.name;
+    const pokemon = e.currentTarget.name;
 
     const shuffledPokemonData = shuffle(pokemonData);
 
     // Game Over
-    if (clickedPokemon.includes(name)) {
+    if (clickedPokemon.includes(pokemon)) {
       setScore(0);
       setClickedPokemon([]);
       return;
@@ -43,7 +43,7 @@ function App() {
 
     // Continue
     if (score + 1 > highestScore) setHighestScore(score + 1);
-    setClickedPokemon([...clickedPokemon, name]);
+    setClickedPokemon([...clickedPokemon, pokemon]);
     setScore(score + 1);
     setPokemonData(shuffledPokemonData);
   };

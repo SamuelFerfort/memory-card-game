@@ -1,5 +1,21 @@
 import { capitalizeFirstLetter } from "../helper/helper";
 
+const IDs = [
+  "257",
+  "282",
+  "306",
+  "330",
+  "334",
+  "350",
+  "359",
+  "373",
+  "376",
+  "380",
+  "381",
+  "384",
+];
+
+
 export const fetchPokemonCards = async () => {
   const localData = localStorage.getItem("hoenn");
   let pokemonDetails;
@@ -29,17 +45,4 @@ export const fetchPokemonCards = async () => {
   return pokemonDetails;
 };
 
-const IDs = [
-  "257",
-  "282",
-  "306",
-  "330",
-  "334",
-  "350",
-  "359",
-  "373",
-  "376",
-  "380",
-  "381",
-  "384",
-];
+

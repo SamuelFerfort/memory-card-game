@@ -6,6 +6,7 @@ import song from "./assets/littleroot.mp3";
 import playIcon from "./assets/soundOn.svg";
 import pauseIcon from "./assets/soundOff.svg";
 import Card from "./components/Card";
+import Header from "./components/header";
 import { fetchPokemonCards } from "./components/fetch";
 function App() {
   const [pokemonData, setPokemonData] = useState([]);
@@ -90,16 +91,7 @@ function App() {
       <button className="sound" onClick={toggleSong}>
         <img src={songIcon} alt="song toggle button" />
       </button>
-      <header>
-        <h1>Pokemon Memory Game</h1>
-        <span>
-          Get points by clicking a Pokemon but don't click it more than once!
-        </span>
-        <div className="score">
-          <span>Score:{score}</span>
-          <span>Highest Score:{highestScore}</span>
-        </div>
-      </header>
+      <Header score={score} highestScore={highestScore} />
       {startGame ? (
         <main>
           {pokemonData.map((pokemon) => (
